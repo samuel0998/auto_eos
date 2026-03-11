@@ -7,7 +7,7 @@ import time
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
-from services.pprt import FCMLParams, build_function_rollup_url, fetch_fcml_report
+from services.pprt import FCMLParams, STORAGE_STATE_PATH, build_function_rollup_url, fetch_fcml_report
 from services.reporte_service import upsert_metric
 
 logger = logging.getLogger(__name__)
@@ -63,6 +63,11 @@ def _compute_window(now: Optional[datetime] = None) -> tuple[datetime, datetime]
 
 
 def trigger_hourly_collection(triggered_by: str = "scheduler") -> Dict:
+    if not os.path.exists(STORAGE_STATE_PATH):
+        msg = "Sessão Midway não inicializada. Acesse /fclm/session/init e envie o storage_state."
+        logger.warning(msg)
+        return {"ok": False, "message": msg}
+
     window_start, window_end = _compute_window()
     params = FCMLParams(
         warehouse_id=WAREHOUSE_ID,

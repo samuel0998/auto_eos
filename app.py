@@ -3,10 +3,10 @@ import logging
 import os
 from datetime import datetime
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, redirect, render_template, request
 
 from services.fclm_service import trigger_hourly_collection, start_background_scheduler
-from services.pprt import STORAGE_STATE_PATH, ensure_session_dir, session_login_init
+from services.pprt import FCLM_BASE, STORAGE_STATE_PATH, ensure_session_dir, session_login_init
 from services.reporte_service import get_latest_metrics, save_manual_fields
 
 
@@ -41,6 +41,14 @@ def create_app() -> Flask:
     def session_status():
         return jsonify({"session_ready": os.path.exists(STORAGE_STATE_PATH), "storage_state_path": STORAGE_STATE_PATH})
 
+    @app.get("/fclm/session/init")
+    def session_init_get():
+        return render_template("session_init.html", login_url=f"{FCLM_BASE}/")
+
+    @app.get("/fclm/session/login")
+    def session_login_redirect():
+        return redirect(f"{FCLM_BASE}/", code=302)
+
     @app.post("/fclm/session/upload")
     def session_upload():
         ensure_session_dir()
@@ -53,7 +61,7 @@ def create_app() -> Flask:
         return jsonify({"ok": True, "saved": True, "storage_state_path": STORAGE_STATE_PATH})
 
     @app.post("/fclm/session/init")
-    def session_init():
+    def session_init_post():
         payload = request.get_json(silent=True) or {}
         wait_seconds = int(payload.get("wait_seconds", 45))
         headless = bool(payload.get("headless", False))
