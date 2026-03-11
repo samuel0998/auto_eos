@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EOS RECEIVE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+
+        <header class="topbar">
+            <div>
+                <h1>EOS RECEIVE</h1>
+                <p class="subtitle">Painel operacional inspirado no reporte horário</p>
+            </div>
+
+            <div class="topbar-actions">
+                <button id="btnSession" class="btn btn-secondary">Status Sessão Midway</button>
+                <button id="btnBuscar" class="btn btn-primary">Puxar Informações (Teste)</button>
+            </div>
+        </header>
+
+        <section class="filters-card">
+            <div class="filters-grid">
+                <div class="field"><label for="warehouseId">Site</label><input type="text" id="warehouseId" value="GIG2"></div>
+                <div class="field"><label for="date">Data</label><input type="date" id="date"></div>
+                <div class="field"><label for="startHour">Início</label><input type="time" id="startHour" value="06:00"></div>
+                <div class="field"><label for="endHour">Fim</label><input type="time" id="endHour" value="18:00"></div>
+                <div class="field"><label for="processId">Process ID</label><input type="text" id="processId" value="01003027"></div>
+                <div class="field"><label for="processoNome">Processo</label><input type="text" id="processoNome" value="Receive"></div>
+            </div>
+        </section>
+
+        <section class="header-grid">
+            <div class="info-card"><span class="info-label">Data</span><span class="info-value" id="infoData">-</span></div>
+            <div class="info-card"><span class="info-label">Meta</span><span class="info-value" id="infoMeta">-</span></div>
+            <div class="info-card"><span class="info-label">Buffer</span><span class="info-value" id="infoBuffer">-</span></div>
+            <div class="info-card"><span class="info-label">Observação</span><span class="info-value" id="infoObservacao">-</span></div>
+            <div class="info-card"><span class="info-label">Processo</span><span class="info-value" id="infoProcesso">-</span></div>
+            <div class="info-card"><span class="info-label">SOS</span><span class="info-value" id="infoSOS">-</span></div>
+            <div class="info-card"><span class="info-label">Pirâmide</span><span class="info-value" id="infoPiramide">-</span></div>
+        </section>
+
+        <section class="summary-grid">
+            <div class="summary-card"><span class="summary-title">Funções</span><strong id="sumFunctions">0</strong></div>
+            <div class="summary-card"><span class="summary-title">Associates</span><strong id="sumAssociates">0</strong></div>
+            <div class="summary-card"><span class="summary-title">DPMO</span><strong id="sumDpmo">0</strong></div>
+            <div class="summary-card"><span class="summary-title">Receive Error</span><strong id="sumRei">0</strong></div>
+            <div class="summary-card"><span class="summary-title">Hora Início</span><strong id="sumHourStart">-</strong></div>
+            <div class="summary-card"><span class="summary-title">Hora Fim</span><strong id="sumHourEnd">-</strong></div>
+        </section>
+
+        <section class="table-section">
+            <div class="section-header"><h2>HORA HORA</h2></div>
+            <div class="table-wrapper">
+                <table class="report-table">
+                    <thead><tr><th>Data</th><th>Horário</th><th>Funções</th><th>Associates</th><th>DPMO</th><th>Receive Error Indicator</th><th>Trigger</th><th>Coletado em</th></tr></thead>
+                    <tbody id="reportTableBody"><tr><td colspan="8" class="empty-state">Nenhum dado carregado.</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="notes-grid">
+            <div class="note-card"><h3>Justificativa (manual)</h3><textarea id="justificativa" class="note-box"></textarea></div>
+            <div class="note-card"><h3>APOLLO (manual)</h3><textarea id="apollo" class="note-box"></textarea></div>
+            <div class="note-card"><h3>Dive Deep (manual)</h3><textarea id="diveDeepText" class="note-box"></textarea></div>
+            <div class="note-card"><h3>Call Outs (manual)</h3><textarea id="callOutsText" class="note-box"></textarea></div>
+        </section>
+
+        <section class="filters-card">
+            <div class="filters-grid">
+                <div class="field"><label for="manualDate">Data métrica</label><input type="date" id="manualDate"></div>
+                <div class="field"><label for="manualStart">Hora início</label><input type="number" min="0" max="23" id="manualStart"></div>
+                <div class="field"><label for="manualEnd">Hora fim</label><input type="number" min="1" max="24" id="manualEnd"></div>
+                <div class="field"><label>&nbsp;</label><button id="btnSaveManual" class="btn btn-primary">Salvar Campos Manuais</button></div>
+            </div>
+            <p id="status" class="subtitle"></p>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/reporte.js') }}"></script>
+</body>
+</html>
