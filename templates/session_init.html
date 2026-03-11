@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inicializar Sessão Midway</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; padding: 0 12px; }
+    textarea { width: 100%; min-height: 260px; font-family: monospace; }
+    button,a { padding: 10px 12px; margin-right: 8px; }
+    .muted { color:#666; }
+  </style>
+</head>
+<body>
+  <h1>Inicializar Sessão Midway</h1>
+  <p>Você estava recebendo 404 porque acessou uma URL inválida com texto extra. Use exatamente <code>/fclm/session/init</code>.</p>
+  <p>
+    <a href="/fclm/session/login" target="_blank">1) Abrir login no FCLM/Midway</a>
+    <a href="/fclm/session/status" target="_blank">2) Ver status da sessão</a>
+  </p>
+  <p class="muted">No Railway não é confiável fazer login interativo dentro do container. O fluxo recomendado é colar o JSON do <code>storage_state</code> abaixo (gerado localmente via Playwright) e enviar.</p>
+
+  <h3>Upload de storage_state JSON</h3>
+  <textarea id="storage" placeholder='Cole aqui o JSON completo do storage_state'></textarea>
+  <br/>
+  <button id="send">Enviar storage_state</button>
+  <pre id="out"></pre>
+
+  <script>
+    document.getElementById('send').addEventListener('click', async () => {
+      const out = document.getElementById('out');
+      try {
+        const json = JSON.parse(document.getElementById('storage').value);
+        const res = await fetch('/fclm/session/upload', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ storage_state: json })
+        });
+        out.textContent = JSON.stringify(await res.json(), null, 2);
+      } catch (e) {
+        out.textContent = 'Erro: ' + e;
+      }
+    });
+  </script>
+</body>
+</html>
