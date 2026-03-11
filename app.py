@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from datetime import datetime
@@ -5,6 +6,7 @@ from datetime import datetime
 from flask import Flask, jsonify, render_template, request
 
 from services.fclm_service import trigger_hourly_collection, start_background_scheduler
+from services.pprt import STORAGE_STATE_PATH, ensure_session_dir, session_login_init
 from services.reporte_service import get_latest_metrics, save_manual_fields
 
 
@@ -34,6 +36,33 @@ def create_app() -> Flask:
     def api_pull_now():
         result = trigger_hourly_collection(triggered_by="manual_button")
         return jsonify(result)
+
+    @app.get("/fclm/session/status")
+    def session_status():
+        return jsonify({"session_ready": os.path.exists(STORAGE_STATE_PATH), "storage_state_path": STORAGE_STATE_PATH})
+
+    @app.post("/fclm/session/upload")
+    def session_upload():
+        ensure_session_dir()
+        payload = request.get_json(force=True) or {}
+        storage_state = payload.get("storage_state")
+        if not storage_state:
+            return jsonify({"ok": False, "message": "Envie storage_state (objeto JSON)."}), 400
+        with open(STORAGE_STATE_PATH, "w", encoding="utf-8") as f:
+            json.dump(storage_state, f)
+        return jsonify({"ok": True, "saved": True, "storage_state_path": STORAGE_STATE_PATH})
+
+    @app.post("/fclm/session/init")
+    def session_init():
+        payload = request.get_json(silent=True) or {}
+        wait_seconds = int(payload.get("wait_seconds", 45))
+        headless = bool(payload.get("headless", False))
+        url = payload.get("url")
+        try:
+            result = session_login_init(url=url, wait_seconds=wait_seconds, headless=headless)
+            return jsonify({"ok": True, **result})
+        except Exception as exc:
+            return jsonify({"ok": False, "message": str(exc)}), 500
 
     @app.get("/template")
     def logs_page():
