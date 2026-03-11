@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EOS RECEIVE</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <header class="topbar">
+      <h1>EOS RECEIVE</h1>
+      <div class="actions">
+        <button id="btn-pull">Puxar informações (teste)</button>
+        <a href="/template" target="_blank">Ver logs/erros</a>
+      </div>
+    </header>
+
+    <section class="grid-one-screen">
+      <div class="card">
+        <h2>HORA HORA</h2>
+        <p id="pull-status">Aguardando coleta...</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Janela</th>
+              <th>Funções</th>
+              <th>Associates</th>
+              <th>DPMO + Receive Error Indicator</th>
+              <th>Coletado em</th>
+            </tr>
+          </thead>
+          <tbody id="metrics-body"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Campos manuais</h2>
+        <form id="manual-form">
+          <div class="row">
+            <label>Data<input type="date" name="metric_date" required></label>
+            <label>Hora início<input type="number" min="0" max="23" name="hour_start" required></label>
+            <label>Hora fim<input type="number" min="1" max="24" name="hour_end" required></label>
+          </div>
+          <label>Justificativa<textarea name="justificativa"></textarea></label>
+          <label>APOLLO<textarea name="apollo"></textarea></label>
+          <label>Dive Deep<textarea name="dive_deep"></textarea></label>
+          <label>Call Outs<textarea name="call_outs"></textarea></label>
+          <button type="submit">Salvar campos manuais</button>
+        </form>
+        <p id="manual-status"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/js/reporte.js"></script>
+</body>
+</html>
