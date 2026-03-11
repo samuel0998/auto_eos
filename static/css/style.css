@@ -1,0 +1,40 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+}
+.container {
+  max-width: 98vw;
+  height: 100vh;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.actions { display: flex; gap: 10px; align-items: center; }
+.grid-one-screen {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+  min-height: 0;
+  flex: 1;
+}
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.08);
+  overflow: auto;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
+.row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+label { display: flex; flex-direction: column; font-size: 13px; margin-bottom: 6px; }
+textarea, input, button { font: inherit; padding: 6px; }
+textarea { min-height: 64px; }
